@@ -51,45 +51,51 @@ This repository fulfills the technical deliverable requirements:
 
 ## How to Run the Application
 
-Always run Docker from **`ammonia-sales-app/`** (the directory that contains `docker-compose.yml` in [this tree](https://github.com/SyedZain295/Ammonia-Sales-app/tree/main/ammonia-sales-app)).
+## How to Run the Application
 
-**GitHub Codespaces:** open the repo, then in the terminal:
-
-```bash
-cd ammonia-sales-app
-```
-
-**Local clone:** same — enter the app folder first:
-
-```bash
-cd ammonia-sales-app
-```
-
-**Start (bash):**
-
-```bash
-printf "FIXED_PRICE_EUR=0.7\n" > .env   # optional; default is 0.7 if you skip this
-docker compose up --build -d
-```
-
-**Windows (PowerShell)** — from `ammonia-sales-app`:
-
-```powershell
-"FIXED_PRICE_EUR=0.7" | Out-File -FilePath .env -Encoding utf8
-docker compose up --build -d
-```
-
-**Open:** app on port **8080** (Codespaces: **Ports** → 8080). Locally: [http://localhost:8080](http://localhost:8080) · health: [http://localhost:8080/api/health](http://localhost:8080/api/health)
-
-**Try it:** move the slider → click **Record Sale** / **Purchase** → check that totals and latest sale update.
-
-**Stop:** `docker compose down`
-
-**Reset sales data:** from `ammonia-sales-app`, run `docker compose down`, delete `backend/db/sales.db`, then `docker compose up --build -d` again.
-
-**If something fails:** confirm `pwd` shows `ammonia-sales-app` and `ls docker-compose.yml` works; then `docker compose ps` and `docker compose logs backend`. After UI changes, rebuild with `docker compose up --build -d`.
+Run all commands from the repository root (where `docker-compose.yml` is located).
 
 ---
+
+### GitHub Codespaces (Recommended)
+
+1. Open the repository in GitHub  
+2. Click **Code → Codespaces → Create Codespace**  
+3. In the terminal, run:
+
+```bash
+cp .env.example .env
+docker compose up --build -d
+
+Open forwarded port 8080
+
+git clone https://github.com/SyedZain295/AmmoniaOS
+cd AmmoniaOS
+
+cp .env.example .env
+docker compose up --build -d
+
+Open:
+
+http://localhost:8080
+http://localhost:8080/api/health
+
+Test
+Select an amount using the slider
+Click Record Sale
+Confirm totals and latest transaction update
+
+Stop
+
+docker compose down
+
+Reset Data (optional)
+
+docker compose down
+rm backend/db/sales.db
+docker compose up --build -d
+
+
 
 ## Tech Stack
 
