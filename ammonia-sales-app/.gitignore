@@ -1,0 +1,11 @@
+.env
+backend/db/*.db
+backend/tests/*.db
+backend/tests/*.db-journal
+**/node_modules
+=
+[backend
+[frontend
+[internal]
+reading
+transferring
