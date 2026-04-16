@@ -2,13 +2,6 @@
 
 **[How to run the application →](#how-to-run-the-application)**
 
----
-
-**Repository:** [github.com/SyedZain295/Ammonia-Sales-app](https://github.com/SyedZain295/Ammonia-Sales-app)
-
-**Runnable app:** the Docker app, `frontend/`, `backend/`, and `docker-compose.yml` live in the **`ammonia-sales-app/`** folder on the `main` branch — [open that folder on GitHub](https://github.com/SyedZain295/Ammonia-Sales-app/tree/main/ammonia-sales-app). Use **`README.md`** in that folder for documentation (GitHub only auto-renders `README.md`, not `Read.me`).
-
-**Quick start:** Clone the repo, then `cd ammonia-sales-app` and follow [How to Run the Application](#how-to-run-the-application) (GitHub Codespaces or local Docker).
 
 ---
 
