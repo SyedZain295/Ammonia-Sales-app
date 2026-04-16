@@ -51,21 +51,44 @@ This repository fulfills the technical deliverable requirements:
 ---
 
 ## How to Run the Application
+### GitHub Codespaces
 
-Always run Docker from **`ammonia-sales-app/`** (the directory that contains `docker-compose.yml` in [this tree](https://github.com/SyedZain295/Ammonia-Sales-app/tree/main/ammonia-sales-app)).
-
-**GitHub Codespaces:** open the repo, then in the terminal:
+1. Open the repository on GitHub  
+2. Click **Code → Codespaces → Create Codespace**  
+3. In the terminal, run:
 
 ```bash
-cd ammonia-sales-app
-```
+cp .env.example .env
+docker compose up --build -d
 
 **Local clone:** same — enter the app folder first:
 
 ```bash
 cp .env.example .env
+
+```
+
+Open forwarded port 8080
+
+***Local Docker***
+```bash
+git clone https://github.com/SyedZain295/AmmoniaOS
+cd AmmoniaOS
+
+cp .env.example .env
 docker compose up --build -d
 ```
+
+http://localhost:8080
+http://localhost:8080/api/health
+
+
+
+git clone https://github.com/SyedZain295/AmmoniaOS
+cd AmmoniaOS
+
+cp .env.example .env
+docker compose up --build -d
 
 **Local (Docker)**
 
@@ -77,19 +100,9 @@ cp .env.example .env
 docker compose up --build -d
 ```
 
-**Start (bash):**
 
-```bash
-printf "FIXED_PRICE_EUR=0.7\n" > .env   # optional; default is 0.7 if you skip this
-docker compose up --build -d
-```
 
-**Windows (PowerShell)** — from `ammonia-sales-app`:
 
-```powershell
-"FIXED_PRICE_EUR=0.7" | Out-File -FilePath .env -Encoding utf8
-docker compose up --build -d
-```
 
 **Open:** app on port **8080** (Codespaces: **Ports** → 8080). Locally: [http://localhost:8080](http://localhost:8080) · health: [http://localhost:8080/api/health](http://localhost:8080/api/health)
 
