@@ -51,50 +51,80 @@ This repository fulfills the technical deliverable requirements:
 
 ## How to Run the Application
 
-## How to Run the Application
-
 Run all commands from the repository root (where `docker-compose.yml` is located).
 
 ---
 
 ### GitHub Codespaces (Recommended)
 
-1. Open the repository in GitHub  
+1. Open the repository on GitHub  
 2. Click **Code → Codespaces → Create Codespace**  
 3. In the terminal, run:
 
 ```bash
 cp .env.example .env
 docker compose up --build -d
-
 Open forwarded port 8080
-
+Local Setup (Docker)
 git clone https://github.com/SyedZain295/AmmoniaOS
 cd AmmoniaOS
 
 cp .env.example .env
 docker compose up --build -d
 
-Open:
+Open in browser:
 
 http://localhost:8080
 http://localhost:8080/api/health
-
-Test
+Test the Application
 Select an amount using the slider
 Click Record Sale
-Confirm totals and latest transaction update
-
-Stop
-
+Verify that totals and latest transaction update
+Stop the Application
 docker compose down
-
 Reset Data (optional)
-
 docker compose down
 rm backend/db/sales.db
 docker compose up --build -d
 
+---
+
+# 🔥 Why this looks better
+
+- ✔ Proper sections (Codespaces / Local / Test / Stop)  
+- ✔ Commands grouped logically  
+- ✔ No duplication  
+- ✔ Easy to scan in 5 seconds  
+- ✔ Looks like a real production README  
+
+---
+
+# ⚠️ ALSO FIX THIS (important)
+
+Your project structure is **OUTDATED**:
+
+❌ You wrote:
+```text
+Ammonia-Sales-app/
+└── ammonia-sales-app/
+
+👉 But your repo is now:
+
+AmmoniaOS/
+├── frontend/
+├── backend/
+├── docker-compose.yml
+✅ Replace your Project Structure with this
+## Project Structure
+
+```text
+AmmoniaOS/
+├── frontend/          # Nginx + static UI
+├── backend/           # Express API + SQLite
+├── docker-compose.yml
+├── .devcontainer/
+├── .env.example
+└── README.md
 
 
 ## Tech Stack
