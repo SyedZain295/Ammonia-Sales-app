@@ -2,6 +2,13 @@
 
 **[How to run the application →](#how-to-run-the-application)**
 
+---
+
+**Repository:** [github.com/SyedZain295/Ammonia-Sales-app](https://github.com/SyedZain295/Ammonia-Sales-app)
+
+**Runnable app:** the Docker app, `frontend/`, `backend/`, and `docker-compose.yml` live in the **`ammonia-sales-app/`** folder on the `main` branch — [open that folder on GitHub](https://github.com/SyedZain295/Ammonia-Sales-app/tree/main/ammonia-sales-app). Use **`README.md`** in that folder for documentation (GitHub only auto-renders `README.md`, not `Read.me`).
+
+**Quick start:** Clone the repo, then `cd ammonia-sales-app` and follow [How to Run the Application](#how-to-run-the-application) (GitHub Codespaces or local Docker).
 
 ---
 
@@ -51,81 +58,45 @@ This repository fulfills the technical deliverable requirements:
 
 ## How to Run the Application
 
-Run all commands from the repository root (where `docker-compose.yml` is located).
+Always run Docker from **`ammonia-sales-app/`** (the directory that contains `docker-compose.yml` in [this tree](https://github.com/SyedZain295/Ammonia-Sales-app/tree/main/ammonia-sales-app)).
 
----
-
-### GitHub Codespaces (Recommended)
-
-1. Open the repository on GitHub  
-2. Click **Code → Codespaces → Create Codespace**  
-3. In the terminal, run:
+**GitHub Codespaces:** open the repo, then in the terminal:
 
 ```bash
-cp .env.example .env
-docker compose up --build -d
-Open forwarded port 8080
-Local Setup (Docker)
-git clone https://github.com/SyedZain295/AmmoniaOS
-cd AmmoniaOS
+cd ammonia-sales-app
+```
 
-cp .env.example .env
-docker compose up --build -d
+**Local clone:** same — enter the app folder first:
 
-Open in browser:
+```bash
+cd ammonia-sales-app
+```
 
-http://localhost:8080
-http://localhost:8080/api/health
-Test the Application
-Select an amount using the slider
-Click Record Sale
-Verify that totals and latest transaction update
-Stop the Application
-docker compose down
-Reset Data (optional)
-docker compose down
-rm backend/db/sales.db
+**Start (bash):**
+
+```bash
+printf "FIXED_PRICE_EUR=0.7\n" > .env   # optional; default is 0.7 if you skip this
 docker compose up --build -d
+```
+
+**Windows (PowerShell)** — from `ammonia-sales-app`:
+
+```powershell
+"FIXED_PRICE_EUR=0.7" | Out-File -FilePath .env -Encoding utf8
+docker compose up --build -d
+```
+
+**Open:** app on port **8080** (Codespaces: **Ports** → 8080). Locally: [http://localhost:8080](http://localhost:8080) · health: [http://localhost:8080/api/health](http://localhost:8080/api/health)
+
+**Try it:** move the slider → click **Record Sale** / **Purchase** → check that totals and latest sale update.
+
+**Stop:** `docker compose down`
+
+**Reset sales data:** from `ammonia-sales-app`, run `docker compose down`, delete `backend/db/sales.db`, then `docker compose up --build -d` again.
+
+**If something fails:** confirm `pwd` shows `ammonia-sales-app` and `ls docker-compose.yml` works; then `docker compose ps` and `docker compose logs backend`. After UI changes, rebuild with `docker compose up --build -d`.
 
 ---
-
-# 🔥 Why this looks better
-
-- ✔ Proper sections (Codespaces / Local / Test / Stop)  
-- ✔ Commands grouped logically  
-- ✔ No duplication  
-- ✔ Easy to scan in 5 seconds  
-- ✔ Looks like a real production README  
-
----
-
-# ⚠️ ALSO FIX THIS (important)
-
-Your project structure is **OUTDATED**:
-
-❌ You wrote:
-```text
-Ammonia-Sales-app/
-└── ammonia-sales-app/
-
-👉 But your repo is now:
-
-AmmoniaOS/
-├── frontend/
-├── backend/
-├── docker-compose.yml
-✅ Replace your Project Structure with this
-## Project Structure
-
-```text
-AmmoniaOS/
-├── frontend/          # Nginx + static UI
-├── backend/           # Express API + SQLite
-├── docker-compose.yml
-├── .devcontainer/
-├── .env.example
-└── README.md
-
 
 ## Tech Stack
 
@@ -346,3 +317,10 @@ Backend code is split into routes, database access, and server startup, so new e
 **Traceability**  
 Changes live in version control; this README documents how to run, test, and reset the system so behavior and setup stay transparent for reviewers and teammates.
 
+---
+
+## Course / evaluation context
+
+This project supports **TECH Deliverable 1 & 2** (one-button app + agentic organization). Evaluation criteria and development checklist: [Innovation and Complexity Management – development checklist](https://dominikboehler.de/inco_new/#development-checklist--evaluation-criteria).
+
+*Innovation and Complexity Management — Course on web application development in a health context at Deggendorf Institute of Technology.*
