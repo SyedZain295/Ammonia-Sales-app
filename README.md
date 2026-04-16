@@ -1,55 +1,85 @@
-# ammonia-sales-app
+# Ammonia Sales Platform
 
-**Quick start:** See [How to Run the Application](#how-to-run-the-application) below (Codespaces or local Docker).
+**Quick start:** See [How to Run the Application](#how-to-run-the-application) below (GitHub Codespaces or local Docker).
 
-## Project overview
-`ammonia-sales-app` is a minimal full-stack demo that records ammonia sales with one click.  
-The frontend provides one main action: **Sell 1 kg of Ammonia**.  
-When clicked, it calls the backend API, which stores a sale in SQLite and returns confirmation.
+---
 
-## Architecture overview
-- **Frontend** (`frontend`): static HTML/CSS/JS served by Nginx
-- **Backend** (`backend`): Node.js + Express REST API
-- **Database** (`backend/db/sales.db`): SQLite file persisted on disk
-- **Container orchestration**: Docker Compose for one-command startup
+## Project Overview
 
-Flow:
-1. User opens frontend page.
-2. User clicks `Sell 1 kg of Ammonia`.
-3. Frontend sends `POST /api/sales` to backend.
-4. Backend validates payload and inserts a row in SQLite.
-5. Frontend displays `Sale recorded`, refreshes summary cards, and updates latest sales list.
+Ammonia Sales Platform is a minimal full-stack prototype for recording ammonia sale transactions through a one-button workflow.
+
+The application demonstrates a complete end-to-end system: **frontend → backend → database**, fully containerized and cloud-deployable.
+
+Users can select an amount of ammonia (in kg) using a slider and record a sale with a single button click. Each transaction is processed by the backend and stored in a SQLite database.
+
+This repository fulfills the technical deliverable requirements:
+
+- Fully functioning one-button app (one main action button; slider is for input only)
+- Backend API with database integration
+- Dockerized and cloud-deployable
+- Runnable in GitHub Codespaces
+
+---
+
+## Architecture Overview
+
+- **Frontend (`frontend`)**: static HTML/CSS/JS served by Nginx  
+- **Backend (`backend`)**: Node.js + Express REST API  
+- **Database (`backend/db/sales.db`)**: SQLite persisted on disk  
+- **Container orchestration**: Docker Compose  
+
+---
+
+## System Flow
+
+1. User opens the application  
+2. User selects ammonia amount using the slider  
+3. User clicks **Record Sale** (or **Purchase**, depending on build)  
+4. Frontend sends `POST /api/sales` with `{ "amount_kg": <number> }`  
+5. Backend validates input and calculates `price_eur`  
+6. Sale is stored in SQLite  
+7. UI updates with confirmation and latest data  
+
+---
 
 ## How to Run the Application
+
+Create a **`.env`** file in the project root (same folder as `docker-compose.yml`) if you want to override defaults. Example:
+
+```bash
+printf "FIXED_PRICE_EUR=500\n" > .env
+```
+
+(`FIXED_PRICE_EUR` defaults to `500` if `.env` is missing.)
 
 ### GitHub Codespaces (Recommended)
 
 1. Open this repository in GitHub Codespaces  
-2. Run in terminal:
+2. In the terminal, from the folder that contains `docker-compose.yml`:
 
 ```bash
-cp .env.example .env
+printf "FIXED_PRICE_EUR=500\n" > .env
 docker compose up --build -d
 ```
 
-3. Open forwarded port **8080** in the browser  
+3. Open the **forwarded port 8080** in the browser (Ports tab → 8080)
 
 ---
 
 ### Local (Docker)
 
 1. Ensure Docker is installed and running  
-2. Run:
+2. From the project root (where `docker-compose.yml` lives):
 
 ```bash
-cp .env.example .env
+printf "FIXED_PRICE_EUR=500\n" > .env
 docker compose up --build -d
 ```
 
 3. Open:
 
-- http://localhost:8080  
-- http://localhost:8080/api/health  
+- App: [http://localhost:8080](http://localhost:8080)  
+- Health: [http://localhost:8080/api/health](http://localhost:8080/api/health)  
 
 ---
 
@@ -60,9 +90,10 @@ docker compose up --build -d
 3. Click **Record Sale**  
 4. Verify:
 
-   - success message appears  
-   - totals update  
-   - latest transaction updates  
+   - Success message appears  
+   - Total sales updates  
+   - Total revenue updates  
+   - Latest transaction updates  
 
 ---
 
@@ -72,123 +103,66 @@ docker compose up --build -d
 docker compose down
 ```
 
-## Tech stack
-- Frontend: HTML, CSS, Vanilla JavaScript
-- Backend: Node.js, Express, CORS
-- Database: SQLite (`sqlite3` driver)
-- Testing: Node built-in test runner (`node:test`)
-- Containerization: Docker, Docker Compose
-- Codespaces support: `.devcontainer/devcontainer.json`
+---
 
-## Project structure
+## Tech Stack
+
+- **Frontend**: HTML, CSS, Vanilla JavaScript  
+- **Backend**: Node.js, Express  
+- **Database**: SQLite  
+- **Containerization**: Docker, Docker Compose  
+- **Dev environment**: GitHub Codespaces (optional)  
+
+---
+
+## Project Structure
+
 ```text
 .
 ├── frontend/
-│   ├── Dockerfile
-│   ├── index.html
-│   ├── script.js
-│   └── styles.css
 ├── backend/
-│   ├── Dockerfile
-│   ├── package.json
-│   ├── db/
-│   ├── src/
-│   │   ├── app.js
-│   │   ├── db.js
-│   │   └── server.js
-│   └── tests/
-│       └── sales.test.js
-├── .devcontainer/
-│   └── devcontainer.json
-├── .dockerignore
-├── .env.example
-├── .gitignore
 ├── docker-compose.yml
+├── .env
 └── README.md
 ```
 
-## How to run the app
-### Local (Docker Desktop)
-1. Ensure Docker Desktop is installed and running.
-2. Copy env template:
-   - PowerShell: `Copy-Item .env.example .env`
-3. Start the app:
-   - `docker compose up --build -d`
-4. Open:
-   - App UI: `http://localhost:8080`
-   - Health check: `http://localhost:8080/api/health`
-5. Stop when done:
-   - `docker compose down`
+*(`.env` is listed in `.gitignore`; create it locally as shown above.)*
 
-### Quick reset (clear values)
-If you want to reset totals/sales:
-- `docker compose down`
-- delete `backend/db/sales.db`
-- `docker compose up --build -d`
+---
 
-## How to run in GitHub Codespaces
-1. Open repository in GitHub Codespaces.
-2. Copy env file:
-   - `cp .env.example .env`
-3. Run:
-   - `docker compose up --build -d`
-4. Open forwarded ports:
-   - `8080` for app UI
-5. Verify:
-   - open `/api/health` on the 8080 forwarded URL
-6. Stop:
-   - `docker compose down`
+## API Endpoints
 
-## API endpoints
-- `GET /api/health`  
-  Response: `{ "status": "ok" }`
+### Health
 
-- `POST /api/sales`  
-  Request body (expected):
-  ```json
-  { "amount_kg": 1 }
-  ```
-  Response example:
-  ```json
-  {
-    "success": true,
-    "message": "Sale recorded",
-    "sale": {
-      "id": 1,
-      "amount_kg": 1,
-      "price_eur": 500,
-      "created_at": "2026-04-16 00:00:00"
-    }
-  }
-  ```
+`GET /api/health`
 
-- `GET /api/sales`  
-  Returns all stored sales ordered by newest first:
-  ```json
-  {
-    "count": 1,
-    "sales": [
-      {
-        "id": 1,
-        "amount_kg": 1,
-        "price_eur": 500,
-        "created_at": "2026-04-16 00:00:00"
-      }
-    ]
-  }
-  ```
+### Record sale
 
-- `DELETE /api/sales`  
-  Clears all stored sales for demo reset:
-  ```json
-  {
-    "success": true,
-    "message": "All sales cleared"
-  }
-  ```
+`POST /api/sales`
 
-## Database schema
-SQLite table: `sales`
+**Example request body:**
+
+```json
+{ "amount_kg": 200 }
+```
+
+**Example response:**
+
+```json
+{
+  "message": "Sale recorded",
+  "amount_kg": 200,
+  "price_eur": 100000
+}
+```
+
+*(Illustrative numbers assume `FIXED_PRICE_EUR=500` in `.env`: `price_eur = amount_kg × FIXED_PRICE_EUR`.)*
+
+`GET /api/sales` returns all stored sales for the dashboard.
+
+---
+
+## Database Schema
 
 ```sql
 CREATE TABLE sales (
@@ -199,51 +173,80 @@ CREATE TABLE sales (
 );
 ```
 
-On each valid sale button click:
-- `amount_kg = 1`
-- `price_eur = 500` (or `FIXED_PRICE_EUR` from env)
-- `created_at = CURRENT_TIMESTAMP`
+**Pricing (demo):**
 
-## How to test the button flow
-1. Run `docker compose up --build`.
-2. Open frontend at `http://localhost:8080`.
-3. Click **Sell 1 kg of Ammonia**.
-4. Confirm status shows `Sale recorded`.
-5. Confirm total sales and total revenue update.
-6. Confirm latest 5 sales list updates.
-7. Use **Reset demo data** button and confirm counters return to zero.
-8. Optional API checks:
-   - `http://localhost:3000/api/sales`
-   - `http://localhost:3000/api/health`
+`price_eur = amount_kg × FIXED_PRICE_EUR` (set `FIXED_PRICE_EUR` in `.env`)
 
-Backend unit/integration-style test:
-- `cd backend && npm install && npm test`
+---
 
-## Cloud deployment readiness
-This project is deployable to common cloud runtimes with minimal changes:
-- Separate frontend and backend containers already defined
-- Runtime configuration via environment variables (`PORT`, `DB_PATH`, `FIXED_PRICE_EUR`)
-- Health endpoint included for probes (`GET /api/health`)
-- Stateless API layer except SQLite file mount
+## Cloud Deployment Readiness
 
-For production scale, replace SQLite with a managed SQL database and use a persistent volume strategy.
+- Containerized services  
+- Environment-based configuration  
+- Health endpoint for probes  
+- Replaceable database layer (SQLite → managed SQL for production scale)  
 
-## Team development workflow with AI agents
-- Humans define requirements, architecture, acceptance criteria, and release decisions.
-- Humans review and approve all final code and infrastructure changes.
-- AI agents assist with scaffolding, coding, testing, Docker setup, documentation, and safe refactoring.
-- Asynchronous unattended AI work is used only for bounded tasks (for example drafting tests, improving docs, proposing refactors).
-- All AI-generated output is validated through tests and human review before merge/deployment.
-- Team alignment is maintained via shared requirements, explicit acceptance criteria, code review, and automated checks.
+---
+
+## Team Development Workflow with AI Agents
+
+### Roles and Responsibilities
+
+**Human team members**
+
+- Define requirements and architecture  
+- Ensure alignment with project goals  
+- Review and approve all changes  
+- Validate correctness and performance  
+
+**AI agents**
+
+- Generate code and structure  
+- Assist with debugging  
+- Improve documentation  
+- Suggest optimizations  
+
+### Asynchronous AI development
+
+AI agents are used asynchronously for:
+
+- Generating code  
+- Improving documentation  
+- Suggesting improvements  
+
+All outputs are:
+
+- Based on clear instructions  
+- Reviewed by humans before merge or deployment  
+
+### Team alignment
+
+Maintained through:
+
+- Clear requirements  
+- Structured workflow  
+- Code review  
+- Shared architecture decisions  
+- Version control  
 
 ### Optimization goals
-The team optimizes for:
-- **Performance**: fast API responses and lightweight frontend
-- **Development Time**: simple architecture and rapid iteration
-- **Cost**: low runtime footprint and minimal service dependencies
-- **Accuracy**: deterministic sale-recording behavior and validated input
-- **Usability**: one-click workflow with clear status feedback
-- **Security**: no hardcoded secrets and least-complex exposure surface
-- **Scalability**: containerized services with clear upgrade path
-- **Extensibility/Maintainability**: modular backend files and documented API
-- **Traceability**: explicit requirements, logs, tests, and review process
+
+| Dimension | Focus |
+|-----------|--------|
+| **Performance** | Fast, lightweight stack |
+| **Development Time** | Simple architecture, rapid iteration |
+| **Cost** | Minimal infrastructure |
+| **Accuracy** | Validated inputs, deterministic pricing rules |
+| **Usability** | Intuitive one-button workflow + clear feedback |
+| **Security** | No hardcoded secrets; env-based config |
+| **Scalability** | Container-ready; clear service boundaries |
+| **Extensibility / Maintainability** | Modular structure |
+| **Traceability** | Version control and documentation |
+
+---
+
+## Course / evaluation context
+
+This project supports **TECH Deliverable 1 & 2** (one-button app + agentic organization). Evaluation criteria and development checklist: [Innovation and Complexity Management – development checklist](https://dominikboehler.de/inco_new/#development-checklist--evaluation-criteria).
+
+*Innovation and Complexity Management — Course on web application development in a health context at Deggendorf Institute of Technology.*
