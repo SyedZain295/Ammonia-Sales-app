@@ -4,6 +4,12 @@
 
 ---
 
+**Repository:** [github.com/SyedZain295/Ammonia-Sales-app](https://github.com/SyedZain295/Ammonia-Sales-app)
+
+**Runnable app:** the Docker app, `frontend/`, `backend/`, and `docker-compose.yml` live in the **`ammonia-sales-app/`** folder on the `main` branch — [open that folder on GitHub](https://github.com/SyedZain295/Ammonia-Sales-app/tree/main/ammonia-sales-app). Use **`README.md`** in that folder for documentation (GitHub only auto-renders `README.md`, not `Read.me`).
+
+**Quick start:** Clone the repo, then `cd ammonia-sales-app` and follow [How to Run the Application](#how-to-run-the-application) (GitHub Codespaces or local Docker).
+
 ---
 
 ## Project Overview
@@ -51,68 +57,53 @@ This repository fulfills the technical deliverable requirements:
 ---
 
 ## How to Run the Application
-### GitHub Codespaces
 
-1. Open the repository on GitHub  
-2. Click **Code → Codespaces → Create Codespace**  
-3. In the terminal, run:
+All Docker commands must be run from **`ammonia-sales-app/`** — the folder that contains **`docker-compose.yml`** ([view on GitHub](https://github.com/SyedZain295/Ammonia-Sales-app/tree/main/ammonia-sales-app)).
 
-```bash
-cp .env.example .env
-docker compose up --build -d
+### GitHub Codespaces (recommended)
 
-**Local clone:** same — enter the app folder first:
+1. Open [SyedZain295/Ammonia-Sales-app](https://github.com/SyedZain295/Ammonia-Sales-app) on GitHub.  
+2. Click **Code → Codespaces → Create codespace on main**.  
+3. In the terminal:
 
 ```bash
-cp .env.example .env
-
-```
-
-Open forwarded port 8080
-
-***Local Docker***
-```bash
-git clone https://github.com/SyedZain295/AmmoniaOS
-cd AmmoniaOS
-
-cp .env.example .env
+cd ammonia-sales-app
+printf "FIXED_PRICE_EUR=0.7\n" > .env   # optional; Compose defaults to 0.7 if omitted
 docker compose up --build -d
 ```
 
-http://localhost:8080
-http://localhost:8080/api/health
+4. Open the **Ports** tab → port **8080** → open in browser.  
+5. Optional check: `curl -s http://localhost:8080/api/health`
 
+---
 
-
-git clone https://github.com/SyedZain295/AmmoniaOS
-cd AmmoniaOS
-
-cp .env.example .env
-docker compose up --build -d
-
-**Local (Docker)**
+### Local machine (clone + Docker)
 
 ```bash
-git clone https://github.com/SyedZain295/AmmoniaOS
-cd AmmoniaOS
-
-cp .env.example .env
+git clone https://github.com/SyedZain295/Ammonia-Sales-app.git
+cd Ammonia-Sales-app/ammonia-sales-app
+printf "FIXED_PRICE_EUR=0.7\n" > .env   # optional
 docker compose up --build -d
 ```
 
+Then open [http://localhost:8080](http://localhost:8080) and [http://localhost:8080/api/health](http://localhost:8080/api/health).
 
+**Windows (PowerShell)** — after `cd Ammonia-Sales-app\ammonia-sales-app`:
 
+```powershell
+"FIXED_PRICE_EUR=0.7" | Out-File -FilePath .env -Encoding utf8
+docker compose up --build -d
+```
 
+---
 
-**Open:** app on port **8080** (Codespaces: **Ports** → 8080). Locally: [http://localhost:8080](http://localhost:8080) · health: [http://localhost:8080/api/health](http://localhost:8080/api/health)
+### Try it · stop · reset
 
-**Try it:** move the slider → click **Record Sale** / **Purchase** → check that totals and latest sale update.
+- **Try it:** move the slider → click **Record Sale** or **Purchase** → confirm totals and latest sale update.  
+- **Stop:** `docker compose down` (from `ammonia-sales-app/`).  
+- **Reset data:** `docker compose down`, delete `backend/db/sales.db`, then `docker compose up --build -d` again.
 
-**Stop:** `docker compose down`
-
-**Reset sales data:** from `ammonia-sales-app`, run `docker compose down`, delete `backend/db/sales.db`, then `docker compose up --build -d` again.
-
-**If something fails:** confirm `pwd` shows `ammonia-sales-app` and `ls docker-compose.yml` works; then `docker compose ps` and `docker compose logs backend`. After UI changes, rebuild with `docker compose up --build -d`.
+**If something fails:** run `pwd` (should end in `ammonia-sales-app`), `ls docker-compose.yml`, then `docker compose ps` and `docker compose logs backend`. After changing frontend files, run `docker compose up --build -d` so the image rebuilds.
 
 ---
 
