@@ -1,4 +1,4 @@
-# AmmoniaoOS
+# AmmoniaOS
 
 **Repository:** [github.com/SyedZain295/Ammonia-Sales-app](https://github.com/SyedZain295/Ammonia-Sales-app)
 
