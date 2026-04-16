@@ -1,6 +1,10 @@
-# AmmoniaOS
+# AmmoniaoOS
 
-**Quick start:** See [How to Run the Application](#how-to-run-the-application) below (GitHub Codespaces or local Docker).
+**Repository:** [github.com/SyedZain295/Ammonia-Sales-app](https://github.com/SyedZain295/Ammonia-Sales-app)
+
+**Runnable app:** the Docker app, `frontend/`, `backend/`, and `docker-compose.yml` live in the **`ammonia-sales-app/`** folder on the `main` branch — [open that folder on GitHub](https://github.com/SyedZain295/Ammonia-Sales-app/tree/main/ammonia-sales-app). Use **`README.md`** in that folder for documentation (GitHub only auto-renders `README.md`, not `Read.me`).
+
+**Quick start:** Clone the repo, then `cd ammonia-sales-app` and follow [How to Run the Application](#how-to-run-the-application) (GitHub Codespaces or local Docker).
 
 ---
 
@@ -26,7 +30,7 @@ This repository fulfills the technical deliverable requirements:
 - **Frontend (`frontend`)**: static HTML/CSS/JS served by **Nginx** in its own container. The browser loads the UI from port **8080** (mapped to Nginx’s port 80 inside the container).  
 - **Backend (`backend`)**: **Node.js + Express** REST API in a separate container, listening on port **3000** inside the Docker network.  
 - **API routing**: Nginx proxies requests under **`/api/`** to the backend service (`http://backend:3000`). That way the frontend can call **`/api/sales`** and **`/api/health`** on the **same origin** as the page (port 8080), which avoids CORS issues and matches how the app runs in Codespaces behind forwarded URLs.  
-- **Database (`backend/db/sales.db`)**: **SQLite** file stored on the host under `backend/db/` via a Docker volume, so data survives container restarts until you delete the file or run `docker compose down` without relying on unnamed volumes for the DB path you mount.  
+- **Database (`ammonia-sales-app/backend/db/sales.db`)**: **SQLite** file stored on the host under `backend/db/` (relative to **`ammonia-sales-app/`**) via a Docker volume, so data survives container restarts until you delete the file or run `docker compose down` without relying on unnamed volumes for the DB path you mount.  
 - **Container orchestration**: **Docker Compose** builds and starts both services with one command.
 
 | Port (host) | Service | Purpose |
@@ -50,31 +54,43 @@ This repository fulfills the technical deliverable requirements:
 
 ## How to Run the Application
 
-Use **Docker** from the folder that contains **`docker-compose.yml`** (repo root, or `cd` into a nested app folder if your clone uses one).
+Always run Docker from **`ammonia-sales-app/`** (the directory that contains `docker-compose.yml` in [this tree](https://github.com/SyedZain295/Ammonia-Sales-app/tree/main/ammonia-sales-app)).
 
-**Start (GitHub Codespaces or local — bash):**
+**GitHub Codespaces:** open the repo, then in the terminal:
 
 ```bash
-printf "FIXED_PRICE_EUR=500\n" > .env   # optional; default is 500 if you skip this
+cd ammonia-sales-app
+```
+
+**Local clone:** same — enter the app folder first:
+
+```bash
+cd ammonia-sales-app
+```
+
+**Start (bash):**
+
+```bash
+printf "FIXED_PRICE_EUR=0.7\n" > .env   # optional; default is 0.7 if you skip this
 docker compose up --build -d
 ```
 
-**Windows (PowerShell)** — create `.env` if you want a custom price:
+**Windows (PowerShell)** — from `ammonia-sales-app`:
 
 ```powershell
-"FIXED_PRICE_EUR=500" | Out-File -FilePath .env -Encoding utf8
+"FIXED_PRICE_EUR=0.7" | Out-File -FilePath .env -Encoding utf8
 docker compose up --build -d
 ```
 
-**Open:** app on port **8080** (in Codespaces: **Ports** →8080). Locally: [http://localhost:8080](http://localhost:8080) · health: [http://localhost:8080/api/health](http://localhost:8080/api/health)
+**Open:** app on port **8080** (Codespaces: **Ports** → 8080). Locally: [http://localhost:8080](http://localhost:8080) · health: [http://localhost:8080/api/health](http://localhost:8080/api/health)
 
 **Try it:** move the slider → click **Record Sale** / **Purchase** → check that totals and latest sale update.
 
 **Stop:** `docker compose down`
 
-**Reset sales data:** `docker compose down`, delete `backend/db/sales.db`, then `docker compose up --build -d` again.
+**Reset sales data:** from `ammonia-sales-app`, run `docker compose down`, delete `backend/db/sales.db`, then `docker compose up --build -d` again.
 
-**If something fails:** run from the directory with `docker-compose.yml`; check `docker compose ps` and `docker compose logs backend`. After UI changes, rebuild with `docker compose up --build -d`.
+**If something fails:** confirm `pwd` shows `ammonia-sales-app` and `ls docker-compose.yml` works; then `docker compose ps` and `docker compose logs backend`. After UI changes, rebuild with `docker compose up --build -d`.
 
 ---
 
@@ -90,23 +106,26 @@ docker compose up --build -d
 
 ## Project Structure
 
+On GitHub, the repository root is **`Ammonia-Sales-app`**. The **containerized application** is under **`ammonia-sales-app/`**:
+
 ```text
-.
-├── frontend/                 # Nginx + static UI (index.html, script.js, styles.css, nginx.conf)
-│   └── Dockerfile
-├── backend/                  # Express API + SQLite folder
-│   ├── src/                  # app.js, server.js, db.js
-│   ├── db/                   # sales.db created at runtime (gitignored)
-│   ├── tests/                # optional API tests
-│   └── Dockerfile
-├── docker-compose.yml        # frontend + backend services
-├── .devcontainer/            # optional Codespaces / Dev Container config
-├── .env                      # local only — create yourself (see Configuration)
-├── .gitignore
-└── README.md
+Ammonia-Sales-app/                    # repository root
+└── ammonia-sales-app/                # ← run all docker commands here
+    ├── frontend/                     # Nginx + static UI
+    │   └── Dockerfile
+    ├── backend/
+    │   ├── src/                      # app.js, server.js, db.js
+    │   ├── db/                       # sales.db at runtime (gitignored)
+    │   ├── tests/
+    │   └── Dockerfile
+    ├── docker-compose.yml
+    ├── .devcontainer/                # optional
+    ├── .env                          # local only (create yourself)
+    ├── .gitignore
+    └── README.md                     # app documentation (this file may live here or at repo root)
 ```
 
-*(`.env` and `backend/db/*.db` are gitignored; create `.env` and the DB appears after the first sale.)*
+*(Paths like `backend/db/*.db` are relative to **`ammonia-sales-app/`**.)*
 
 ---
 
@@ -129,7 +148,7 @@ Returns service status (and may include uptime / metadata depending on build). U
 **Body:**
 
 ```json
-{ "amount_kg": 200 }
+{ "amount_kg": 10 }
 ```
 
 **Success (201):**
@@ -137,14 +156,14 @@ Returns service status (and may include uptime / metadata depending on build). U
 ```json
 {
   "message": "Sale recorded",
-  "amount_kg": 200,
-  "price_eur": 100000
+  "amount_kg": 10,
+  "price_eur": 7
 }
 ```
 
-*(Example: `price_eur = amount_kg × FIXED_PRICE_EUR`. With `FIXED_PRICE_EUR=500`, `200 × 500 = 100000`.)*
+*(Example: `price_eur = amount_kg × FIXED_PRICE_EUR`. With `FIXED_PRICE_EUR=0.7`, `10 × 0.7 = 7`.)*
 
-**Validation error (400):** invalid or out-of-range `amount_kg` — response includes an `error` field (exact rules depend on backend version; check `backend/src/app.js`).
+**Validation error (400):** invalid or out-of-range `amount_kg` — response includes an `error` field (exact rules depend on backend version; check `ammonia-sales-app/backend/src/app.js`).
 
 ### List sales
 
@@ -158,8 +177,8 @@ Returns JSON such as:
   "sales": [
     {
       "id": 3,
-      "amount_kg": 200,
-      "price_eur": 100000,
+      "amount_kg": 10,
+      "price_eur": 7,
       "created_at": "2026-04-17 12:00:00"
     }
   ]
@@ -170,14 +189,14 @@ Sales are typically ordered **newest first** (see backend query). The UI uses th
 
 ### Optional: clear all sales (if implemented)
 
-`DELETE /api/sales` may be available for demo resets; if not, delete `backend/db/sales.db` as described above.
+`DELETE /api/sales` may be available for demo resets; if not, delete `ammonia-sales-app/backend/db/sales.db` (from repo root) or `backend/db/sales.db` when your working directory is `ammonia-sales-app/`.
 
 ### Backend tests (optional)
 
-From the `backend` folder, with Node.js installed:
+From **`ammonia-sales-app/backend`**, with Node.js installed:
 
 ```bash
-cd backend
+cd ammonia-sales-app/backend
 npm install
 npm test
 ```
@@ -294,3 +313,10 @@ Backend code is split into routes, database access, and server startup, so new e
 **Traceability**  
 Changes live in version control; this README documents how to run, test, and reset the system so behavior and setup stay transparent for reviewers and teammates.
 
+---
+
+## Course / evaluation context
+
+This project supports **TECH Deliverable 1 & 2** (one-button app + agentic organization). Evaluation criteria and development checklist: [Innovation and Complexity Management – development checklist](https://dominikboehler.de/inco_new/#development-checklist--evaluation-criteria).
+
+*Innovation and Complexity Management — Course on web application development in a health context at Deggendorf Institute of Technology.*
