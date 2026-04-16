@@ -1,6 +1,16 @@
-# AmmoniaOS
+# Ammonia Sales Platform
+
+**[How to run the application →](#how-to-run-the-application)**
+
+---
 
 **Repository:** [github.com/SyedZain295/Ammonia-Sales-app](https://github.com/SyedZain295/Ammonia-Sales-app)
+
+**Runnable app:** the Docker app, `frontend/`, `backend/`, and `docker-compose.yml` live in the **`ammonia-sales-app/`** folder on the `main` branch — [open that folder on GitHub](https://github.com/SyedZain295/Ammonia-Sales-app/tree/main/ammonia-sales-app). Use **`README.md`** in that folder for documentation (GitHub only auto-renders `README.md`, not `Read.me`).
+
+**Quick start:** Clone the repo, then `cd ammonia-sales-app` and follow [How to Run the Application](#how-to-run-the-application) (GitHub Codespaces or local Docker).
+
+---
 
 ## Project Overview
 
@@ -307,4 +317,10 @@ Backend code is split into routes, database access, and server startup, so new e
 **Traceability**  
 Changes live in version control; this README documents how to run, test, and reset the system so behavior and setup stay transparent for reviewers and teammates.
 
+---
 
+## Course / evaluation context
+
+This project supports **TECH Deliverable 1 & 2** (one-button app + agentic organization). Evaluation criteria and development checklist: [Innovation and Complexity Management – development checklist](https://dominikboehler.de/inco_new/#development-checklist--evaluation-criteria).
+
+*Innovation and Complexity Management — Course on web application development in a health context at Deggendorf Institute of Technology.*
