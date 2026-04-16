@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ammonia OS</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="container">
+      <h1>Ammonia OS</h1>
+
+      <section class="amount">
+        <p class="amount-label">Amount: <span id="amountValue">1</span> kg</p>
+        <input
+          id="amountSlider"
+          class="amount-slider"
+          type="range"
+          min="1"
+          max="1000"
+          step="1"
+          value="1"
+          aria-label="Amount in kg"
+        />
+      </section>
+
+      <button id="sellBtn" class="sell-btn">Purchase</button>
+
+      <p id="status" class="status" aria-live="polite"></p>
+
+      <section class="cards">
+        <article class="card">
+          <p class="card-label">Total sales</p>
+          <p class="card-value" id="totalSales">0</p>
+        </article>
+        <article class="card">
+          <p class="card-label">Total revenue</p>
+          <p class="card-value" id="totalRevenue">EUR 0.00</p>
+        </article>
+      </section>
+
+      <section class="meta">
+        <p>Latest sale: <span id="latestSale">None yet</span></p>
+      </section>
+
+      <section class="list-wrap">
+        <h2>Latest 5 sales</h2>
+        <ul id="salesList" class="sales-list">
+          <li>No sales yet.</li>
+        </ul>
+      </section>
+    </main>
+    <script src="./script.js"></script>
+  </body>
+</html>

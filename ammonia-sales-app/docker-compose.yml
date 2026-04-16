@@ -1,0 +1,22 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    container_name: ammonia-sales-backend
+    environment:
+      - PORT=3000
+      - DB_PATH=/app/db/sales.db
+      - FIXED_PRICE_EUR=${FIXED_PRICE_EUR:-500}
+    volumes:
+      - ./backend/db:/app/db
+    ports:
+      - "3000:3000"
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: ammonia-sales-frontend
+    depends_on:
+      - backend
+    ports:
+      - "8080:80"
