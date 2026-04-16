@@ -1,4 +1,4 @@
-# Ammonia Sales Platform
+# AmmoniaOS
 
 **Quick start:** See [How to Run the Application](#how-to-run-the-application) below (GitHub Codespaces or local Docker).
 
