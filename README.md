@@ -50,139 +50,31 @@ This repository fulfills the technical deliverable requirements:
 
 ## How to Run the Application
 
-### Prerequisites
+Use **Docker** from the folder that contains **`docker-compose.yml`** (repo root, or `cd` into a nested app folder if your clone uses one).
 
-- **Docker** and **Docker Compose** (Docker Desktop includes Compose v2; use `docker compose`, not necessarily `docker-compose`).  
-- A terminal open in the **repository root** — the directory that contains **`docker-compose.yml`** (if your clone has a nested folder, `cd` into that folder first).
-
-### Configuration (`.env`)
-
-Create a **`.env`** file next to `docker-compose.yml` to set the demo price per kilogram. The file is **not** committed (see `.gitignore`); each developer or Codespace creates their own.
-
-**Linux / macOS / GitHub Codespaces (bash):**
+**Start (GitHub Codespaces or local — bash):**
 
 ```bash
-printf "FIXED_PRICE_EUR=500\n" > .env
-```
-
-**Windows (PowerShell):**
-
-```powershell
-"FIXED_PRICE_EUR=500" | Out-File -FilePath .env -Encoding utf8
-```
-
-If you **skip** creating `.env`, Compose still starts: `FIXED_PRICE_EUR` falls back to **`500`** in `docker-compose.yml` (`${FIXED_PRICE_EUR:-500}`).
-
-### GitHub Codespaces (recommended)
-
-1. Open the repository in **GitHub Codespaces**.  
-2. In the integrated terminal, go to the folder that contains `docker-compose.yml`:
-
-   ```bash
-   cd /workspaces/<your-repo-name>   # adjust if your layout uses a subfolder
-   ls docker-compose.yml # should list the file
-   ```
-
-3. Create `.env` (optional but recommended for explicit pricing):
-
-   ```bash
-   printf "FIXED_PRICE_EUR=500\n" > .env
-   ```
-
-4. Build and start in the **background**:
-
-   ```bash
-   docker compose up --build -d
-   ```
-
-5. Open the **Ports** tab, find **8080**, and open the forwarded URL in the browser (or use “Open in Browser”).  
-6. **Sanity checks** (optional, in the same Codespace):
-
-   ```bash
-   docker compose ps
-   curl -s http://localhost:8080/api/health
-   ```
-
-   You should see JSON with `"status": "ok"` (or similar) from the health endpoint.
-
----
-
-### Local machine (Docker Desktop)
-
-1. Start **Docker Desktop** and wait until it is fully running.  
-2. Open a terminal in the project root (folder with `docker-compose.yml`).  
-3. Create `.env` as above (bash or PowerShell).  
-4. Run:
-
-   ```bash
-   docker compose up --build -d
-   ```
-
-5. In the browser:
-
-   - **App UI:** [http://localhost:8080](http://localhost:8080)  
-   - **Health (via Nginx proxy):** [http://localhost:8080/api/health](http://localhost:8080/api/health)  
-   - **Backend direct (if port 3000 is published):** [http://localhost:3000/api/health](http://localhost:3000/api/health)
-
-6. View logs if something fails:
-
-   ```bash
-   docker compose logs --tail=80 frontend
-   docker compose logs --tail=80 backend
-   ```
-
----
-
-### Testing the application (manual)
-
-1. Open the app on port **8080**.  
-2. Move the **slider** to choose a quantity (kg). The label should update (e.g. “Amount: X kg”).  
-3. Click the main action button (**Record Sale** or **Purchase**, depending on your build).  
-4. Confirm:
-
-   - A **success** status message (e.g. “Sale recorded successfully”).  
-   - **Total sales** increments.  
-   - **Total revenue** matches `sum(price_eur)` for all rows (see pricing formula below).  
-   - **Latest sale** and the **recent list** reflect the new transaction.
-
-5. **API check** (optional):
-
-   ```bash
-   curl -s http://localhost:8080/api/sales | head -c 500
-   ```
-
----
-
-### Stopping the application
-
-```bash
-docker compose down
-```
-
-This stops and removes the Compose stack; your SQLite file under `backend/db/` remains on disk unless you delete it.
-
-### Resetting all sales data
-
-To start from an empty database:
-
-```bash
-docker compose down
-rm -f backend/db/sales.db    # Linux / macOS / Codespaces
+printf "FIXED_PRICE_EUR=500\n" > .env   # optional; default is 500 if you skip this
 docker compose up --build -d
 ```
 
-On Windows (PowerShell), remove `backend\db\sales.db` manually or use `Remove-Item` before bringing the stack up again.
+**Windows (PowerShell)** — create `.env` if you want a custom price:
 
----
+```powershell
+"FIXED_PRICE_EUR=500" | Out-File -FilePath .env -Encoding utf8
+docker compose up --build -d
+```
 
-### Troubleshooting
+**Open:** app on port **8080** (in Codespaces: **Ports** →8080). Locally: [http://localhost:8080](http://localhost:8080) · health: [http://localhost:8080/api/health](http://localhost:8080/api/health)
 
-| Symptom | What to try |
-|--------|-------------|
-| `no configuration file provided` | Run `docker compose` from the directory that **contains** `docker-compose.yml` (`pwd` / `ls`). |
-| Browser shows **502** on `/api/health` | Backend container not healthy; run `docker compose ps` and `docker compose logs backend`. |
-| UI loads but slider does nothing | Hard-refresh the page (`Ctrl+Shift+R`); confirm `frontend/script.js` is loaded (browser devtools → Network). |
-| Old UI after editing files | Rebuild: `docker compose up --build -d` (images cache static files from build time). |
+**Try it:** move the slider → click **Record Sale** / **Purchase** → check that totals and latest sale update.
+
+**Stop:** `docker compose down`
+
+**Reset sales data:** `docker compose down`, delete `backend/db/sales.db`, then `docker compose up --build -d` again.
+
+**If something fails:** run from the directory with `docker-compose.yml`; check `docker compose ps` and `docker compose logs backend`. After UI changes, rebuild with `docker compose up --build -d`.
 
 ---
 
@@ -401,5 +293,4 @@ Backend code is split into routes, database access, and server startup, so new e
 
 **Traceability**  
 Changes live in version control; this README documents how to run, test, and reset the system so behavior and setup stay transparent for reviewers and teammates.
-
 
