@@ -313,10 +313,4 @@ Backend code is split into routes, database access, and server startup, so new e
 **Traceability**  
 Changes live in version control; this README documents how to run, test, and reset the system so behavior and setup stay transparent for reviewers and teammates.
 
----
 
-## Course / evaluation context
-
-This project supports **TECH Deliverable 1 & 2** (one-button app + agentic organization). Evaluation criteria and development checklist: [Innovation and Complexity Management – development checklist](https://dominikboehler.de/inco_new/#development-checklist--evaluation-criteria).
-
-*Innovation and Complexity Management — Course on web application development in a health context at Deggendorf Institute of Technology.*
